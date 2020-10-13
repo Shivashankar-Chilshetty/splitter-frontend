@@ -1,0 +1,175 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand">Edit an Expense </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/group-home']">Home</a>
+            </li>
+            <span class="navbar-text">
+                Hello {{firstName|uppercase}}
+            </span>
+        </ul>
+    </div>
+</nav>
+
+<br>
+<h2 style="text-align:center">Edit the Expense</h2>
+<br>
+
+<div class="container">
+    <div class="row" *ngIf="currentExpense.length!=''">
+        <!--for extra smaller devices keep column units 12 & for for small & other devices keep column units 8-->
+        <div class="col-12 col-sm-8 offset-sm-2 p-3" style="border: ridge;">
+
+            <label for="expenseName">
+                <h4>Expense Description: </h4>
+            </label>
+            <input type="text" id="expenseName" class="form-control" [(ngModel)]="expenseName"
+                placeholder="Enter a description" required autofocus>
+            <br>
+            <label for="expenseAmount">
+                <h4>Amount :</h4>
+            </label>
+            <input type="text" id="expenseAmount" class="form-control" [(ngModel)]="expenseAmount"
+                placeholder="Enter a amount" required>
+            <br>
+            <h4>Paid by</h4>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="paidBy" value="single" (click)="setradio('single')" [checked]='true'
+                        ngModel>
+                    One user
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="paidBy" value="multi" (click)="setradio('multi')" data-toggle="modal"
+                        data-target="#myModal1" ngModel>
+                    Multiple user
+                </label>
+            </div>
+
+            <div *ngIf="isSelected('single')">
+
+                <div class="container">
+                    <ng-select style="width: 60%;" bindLabel="name" placeholder="Select user" appendTo="body"
+                        [searchable]="true" [clearable]="true" [(ngModel)]="paidBy">
+
+                        <ng-option [value]="item.userId" [disabled]="item.disabled" *ngFor="let item of users">
+                            {{item.name}}</ng-option>
+                    </ng-select><br>
+
+                </div>
+            </div>
+
+            <h5>and <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal2">Split
+                    between</button></h5>
+
+            <div class="text-center">
+                <button type="button" class="btn btn-primary btn-lg" (click)="editExpense()">Edit Expense</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Moddal code keeping at the bottom-->
+<!--modal 1-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModal1CenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModal1LongTitle">Edit Expense</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="container">
+                <form #itemForm2="ngForm">
+                    <div class="modal-body">
+                        <div class="table-responsive-12">
+                            <table class="table table-borderless">
+                                <thead class="thead-light">
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let i of users; let in=index">
+                                        <td>{{i.name}}</td>
+                                        <td>
+                                            <input type="number" name="{{in}}" #name="ngModel" class="form-control"
+                                                (change)="isAmountPresent()" [(ngModel)]="users[in].amount" required>
+                                            <!--if amount feild is  empty even after value change, then display error message-->
+                                            <div [hidden]="name.valid||name.pristine" class="alert-danger">Amount is
+                                                required</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="multiDetails()"
+                            [disabled]="!itemForm2.form.valid">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--modal 2-->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModal2CenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModal2LongTitle">Choose whom you want to involve in the expense</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form #itemForm1="ngForm">
+                    <div class="form-group">
+
+                        <div class="list-group checkbox-list-group">
+                            <!--looping namewithamount array & selecting the users -->
+                            <div class="form-check" *ngFor="let tag of users; let in=index">
+                                <input type="checkbox" class="form-check-input" id="{{in}}" name="{{in}}"
+                                    [(ngModel)]="users[in].checked" (change)="getVal()" required>
+                                <label class="form-check-label" for="{{in}}">{{tag.name}}</label>
+                                <!--{{nameswithamount.length}}
+                            {{in}}-->
+                                <hr *ngIf="users.length-1>in">
+                            </div>
+                        </div>
+                        <!--{{itemForm.value|json}}-->
+                    </div>
+                    <!--{{itemForm.touched}}-->
+                    <!--If none of the user/checkbox is selected then display error message & disable submit button-->
+                    <div *ngIf="notChecked" class="alert-danger">select atleast one user</div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            (click)="saveDetails(itemForm1)" [disabled]="notChecked">Submit
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

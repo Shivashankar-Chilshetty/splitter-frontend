@@ -1,0 +1,86 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand">Expense View</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/group-home']">Home</a>
+            </li>
+            <span class="navbar-text">
+                Hello {{firstName|uppercase}}
+            </span>
+        </ul>
+    </div>
+</nav>
+<br><br>
+
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3 text-center">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">{{expenseName}}</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <small> Created by {{createdBy}} on {{createdOn | date}}</small><br>
+                        <small> Updated by {{updatedBy}} on {{updatedOn | date}}</small>
+                    </h6><br>
+                    <h5>Expense Amount : {{amount | currency : 'Rs '}}</h5>
+
+                    <div>
+                        <ul class="list-group list-group-flush" *ngFor="let u of users">
+                            <li class="list-group-item">
+                                <!--if paid & owed share is not 0, then display temp1, else display temp2-->
+                                <ng-container *ngIf="u.paidShare!=0 && u.owedShare!=0; then temp1; else temp2">
+                                </ng-container>
+
+                                <ng-template #temp1>
+                                    <div>
+                                        <p class="card-text"><b>{{u.name}}</b> paid
+                                            <b>{{u.paidShare | currency : 'Rs '}}</b> and owes
+                                            <b>{{u.owedShare | currency : 'Rs '}}</b></p>
+
+                                    </div>
+                                </ng-template>
+                                <ng-template #temp2>
+                                    <!--if paid share is 0 & owed share is not 0-->
+                                    <div *ngIf="u.paidShare==0 && u.owedShare!=0">
+                                        <p class="card-text"><b>{{u.name}}</b> owes
+                                            <b>{{u.owedShare | currency : 'Rs '}}</b></p>
+                                    </div>
+                                    <!--if owed share is 0 & paid share is not 0-->
+                                    <div *ngIf="u.paidShare!=0 && u.owedShare==0">
+                                        <p class="card-text"><b>{{u.name}}</b> paid
+                                            <b>{{u.paidShare | currency : 'Rs '}}</b></p>
+                                    </div>
+                                </ng-template>
+
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 p-2">
+                                <a class="btn btn-secondary" [routerLink]="['/expense-edit', eid]">Edit</a>
+                            </div>
+                            <div class="col-12 col-sm-4 p-2">
+                                <a class="btn btn-danger" style="color: white;" (click)="deleteThisExpense()">delete</a>
+                            </div>
+                            <div class="col-12 col-sm-4 p-2">
+                                <a class="btn btn-primary" style="color: white;" (click)="goBack()">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

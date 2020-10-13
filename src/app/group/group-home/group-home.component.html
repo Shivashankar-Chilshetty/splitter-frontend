@@ -1,0 +1,131 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand">Group Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" (click)="logout()">Logout</a>
+            </li>
+            <span class="navbar-text">
+                Hello {{firstName|uppercase}}
+            </span>
+        </ul>
+    </div>
+</nav>
+
+
+<!--If array length is 0 even after api call, indicated that no data is present, therefore display below tag-->
+<div class="text-center" *ngIf="flag && groups.length == 0">
+    <br><br>
+    <h3>You do not have any groups added yet.</h3>
+    <p>Click on create button to start a new group</p>
+    <div class="text-center">
+        <button type="button" (click)="createGroup()" class="btn btn-lg;"
+            style="background-color: orange; color:white;">Create New Group</button>
+    </div>
+</div>
+
+<!--If array length is greater then 0 after the api call, then display below tag-->
+<div class="container" style="background-color:rgb(211, 211, 211);" *ngIf="flag && groups.length>0">
+    <h4>Group Dashboard</h4>
+    <div class="text-right">
+        <button type="button" (click)="createGroup()" class="btn btn-lg;"
+            style="background-color: orange; color:white;">Create New Group</button>
+    </div>
+    <div class="row">
+        <div class="col-sm-4 p-3" style="border: ridge; height: 5rem;">
+            <h5 class="text-center">Total Balance</h5>
+            <div class="text-center" *ngIf="totalBal>0; else red">
+                <small [ngStyle]="{'color':'green'}">{{totalBal|currency : 'Rs '}}</small>
+            </div>
+            <ng-template #red>
+                <div class="text-center"><small [ngStyle]="{'color':'red'}">{{totalBal|currency : 'Rs '}} </small>
+                </div>
+            </ng-template>
+
+        </div>
+        <div class="col-sm-4 p-3" style="border: ridge; height: 5rem;">
+            <h5 class="text-center">You Owe</h5>
+            <div class="text-center">
+                <small [ngStyle]="{'color':'red'}">{{youOwe| currency : 'Rs '}}</small>
+            </div>
+
+        </div>
+        <div class="col-sm-4 p-3" style="border: ridge; height: 5rem;">
+            <h5 class="text-center">You are Owed</h5>
+            <div class="text-center">
+                <small [ngStyle]="{'color':'green'}">{{youOwed | currency : 'Rs '}}</small>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="container" *ngIf="flag && groups.length>0">
+    <div class="row" style="border:ridge">
+
+        <div class="col-sm-6 p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6 p-3">
+                        <h5 class="text-center">YOU OWE</h5><br>
+                        <div class="list-group" *ngFor="let n of res">
+                            <div class="list-group-item" *ngIf="n[0]==fullName">
+                                <h6>{{n[1]}}</h6> <small [ngStyle]="{'color':'red'}"> you owe
+                                    {{n[2] | currency : 'Rs ' }}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item" *ngIf="isOwe==false">
+                            <h6>Oops!</h6>
+                            <small>You Owe Nothing</small>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 p-3">
+                        <h5 class="text-center">YOU ARE OWED</h5><br>
+                        <div class="list-group" *ngFor="let n of res">
+                            <div class="list-group-item" *ngIf="n[1]==fullName">
+                                <h6>{{n[0]}}</h6><small [ngStyle]="{'color':'green'}"> owes you
+                                    {{n[2] | currency : 'Rs '}}</small>
+                            </div>
+                        </div>
+                        <div class="list-group-item" *ngIf="isOwed==false">
+                            <h6>Oops!</h6>
+                            <small>You are Owed nothing</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-6 p-3">
+            <h4 style="text-align:center">Groups</h4>
+            <div class="container" *ngIf="groups!=null">
+                <div class="row p-2">
+                    <div class="col-12" *ngFor="let g of groups;let i=index;">
+                        <div class="list-group" style="border-left: ridge;">
+                            <div class="list-group-item list-group-item-action list-group-item-light">
+                                <a class="text-secondary" [routerLink]="['/expense-home',groups[i]._id]">
+                                    <h4>{{g.groupName | uppercase}}</h4>
+                                    <h6>created by {{g.createdBy}} on {{g.createdOn | date}}</h6>
+                                </a>
+                                <button type="button" class="close list-group-item list-group-item-danger"
+                                    (click)="deleteThisGroup(groups[i]._id)" aria-label="Close">
+                                    <span class="toollip-test text-danger" data-toggle="tooltip" data-placement="top"
+                                        title="delete this group" aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

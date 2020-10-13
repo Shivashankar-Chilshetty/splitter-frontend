@@ -1,0 +1,7 @@
+.expense-history {
+      padding: 2em 2em 1.42em;
+      border-bottom: 0.15em solid white;
+      overflow-y: scroll;
+      height: 80vh;
+    }
+    

@@ -1,0 +1,94 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand">Expense Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/group-home']">Home</a>
+            </li>
+            <span class="navbar-text">
+                Hello {{firstName|uppercase}}
+            </span>
+        </ul>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/history', groupId]">Recent Activity</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+
+<div class="container" style="background-color:rgb(211, 211, 211); border: ridge;" *ngIf="flag && expenses.length>0">
+    <h2>Expense Dashboard</h2>
+    <div class="text-right">
+        <button type="button" (click)="addExpense()" class="btn btn-lg;"
+            style="background-color: orange; color:white;">Add New Expense</button>
+    </div>
+</div>
+
+
+<div class="text-center" *ngIf="flag && expenses.length==0">
+    <br><br>
+    <h3>You do not have any Added expense yet.</h3>
+    <p>Click on Add button to Add a new Expense</p>
+    <div class="text-center">
+        <button type="button" (click)="addExpense()" class="btn btn-lg;"
+            style="background-color: orange; color:white;">Add New Expense</button>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="flag && expenses.length>0">
+    <div class="row">
+
+        <div class="col-12 col-sm-4 p-2">
+            <h4 style="text-align:center">Group Balances</h4>
+            <ul class="list-group list-group-flush">
+                <div class="list-group-item" *ngFor="let a of finalRes | keyvalue">
+                    <!--if amount is greated then 0 and positive then display below tag, else display tag names red-->
+                    <div *ngIf="a.value>0; else red">{{a.key}} <br><small [ngStyle]="{'color':'green'}"> gets back
+                            {{a.value | currency : 'Rs '}}</small></div>
+
+                    <ng-template #red>
+                        <div>{{a.key}} <br><small [ngStyle]="{'color':'red'}"> owes
+                                {{a.value | removeMinusPipe | currency : 'Rs '}}</small> </div>
+                    </ng-template>
+                </div>
+            </ul>
+        </div>
+
+
+        <!--<div class="col-sm-8">-->
+        <div class="col-12 col-sm-8 p-2">
+            <h4 style="text-align:center">Expenses</h4>
+
+            <div class="container">
+                <div class="row p-2">
+                    <div class="col-12 list-group" style="border-left: ridge;" *ngFor="let e of expenses;let i=index;">
+                        <a [routerLink]="['/expense-view',expenses[i]._id]"
+                            class="list-group-item list-group-item-action list-group-item-light">
+                            <h6>{{e.expenseName}}</h6>
+                            <h6>{{e.expenseAmount}}</h6>
+                            <small>Created on {{e.createdOn | date}} by {{e.createdBy.name}}</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div *ngFor="let n of splitRes">
+        <i>
+            <marquee direction="left" height="50rem"><b>{{n[0]}}</b> owes <b>{{n[1]}}</b> an amount of
+                <b>{{ n[2] | currency : 'Rs '}}</b></marquee>
+        </i>
+    </div>
+</div>

@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ex-frontend';
+
+
+  constructor() {
+  }
+  ngOnInit(): void {
+
+  }
 }

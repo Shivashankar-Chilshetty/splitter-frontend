@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" href="/">SplitWise</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" (click)="goToSignIn()">Sign-In</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br>
+
+<!--for all small devices & devices larger then this, keep column size 6 & move to right by 3 columns & display the div -->
+<div class="container">
+  <div class="row text-center">
+    <div class="col-sm-6 offset-sm-3 p-4" style="border: ridge;">
+      <h4>Splitwise signup</h4>
+      <small>You can sign-up here</small><br><br>
+
+      <div>
+        <label for="inputFirstName" class="sr-only">FirstName</label>
+        <input type="text" id="inputFirstName" class="form-control" [(ngModel)]="firstName" placeholder="FirstName"
+          required autofocus>
+      </div>
+      <br>
+      <div>
+        <label for="inputLastName" class="sr-only">LastName</label>
+        <input type="text" id="inputLastName" class="form-control" [(ngModel)]="lastName" placeholder="LastName"
+          required>
+      </div>
+      <br>
+      <div>
+        <select class="form-control" (change)="selectChangeHandler($event)">
+          <option>Select country code</option>
+          <option *ngFor="let c of country|keyvalue" [value]="c.key">{{c.key}}-{{c.value}}</option>
+        </select>
+      </div>
+      <br>
+      <div>
+        <label for="inputMobile" class="sr-only">Mobile</label>
+        <input type="number" id="inputMobile" class="form-control" [(ngModel)]="mobileNumber"
+          placeholder="Mobile Number" required>
+      </div>
+      <br>
+      <div>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" id="inputEmail" class="form-control" [(ngModel)]="email" placeholder="Email address"
+          required>
+      </div>
+      <br>
+      <div>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="inputPassword" class="form-control" [(ngModel)]="password" placeholder="Password"
+          required>
+      </div>
+      <br>
+      <div>
+        <button class="btn btn-lg btn-primary btn-block" type="button" (click)="signupFunction()">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>

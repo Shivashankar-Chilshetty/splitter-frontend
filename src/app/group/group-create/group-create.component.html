@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand"> Create a group </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/group-home']">Home</a>
+      </li>
+      <span class="navbar-text">
+        Hello {{firstName|uppercase}}
+      </span>
+    </ul>
+  </div>
+</nav>
+<br><br><br>
+
+<h2 class="text-center">Create your group here</h2><br>
+
+<div class="container">
+  <div class="row">
+    <!--for extra smaller devices keep column units 12 & for for small & other devices keep column units 8-->
+    <div class="col-12 col-sm-8 offset-sm-2 p-3" style="border: ridge;">
+
+      <form #createGroupForm="ngForm" (ngSubmit)="saveGroup()">
+
+        <div class="form-group">
+
+          <label>Group Name</label>
+          <input type="text" name="groupName" [(ngModel)]="groupName" #title="ngModel" class="form-control"
+            placeholder="Enter Group Name" required>
+
+        </div>
+        <div [hidden]="title.valid || title.pristine" class="alert alert-danger">
+          Group Name is required
+        </div>
+        <div class="form-group">
+          <label>Choose members</label>
+
+          <ng-select #MyNgSelect bindLabel="firstName" placeholder="Select name" [(ngModel)]="selected" appendTo="body"
+            name="mySelectBox" [searchable]="true" [clearable]="true" multiple="true" required>
+            <ng-option [value]="item.userId" [disabled]="item.disabled" *ngFor="let item of users">
+              {{item.firstName}} {{item.lastName}}
+            </ng-option>
+          </ng-select>
+
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary btn-lg" [disabled]="!createGroupForm.form.valid">Save
+            Group</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

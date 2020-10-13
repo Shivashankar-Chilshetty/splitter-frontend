@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+
+    <a class="navbar-brand">Splitwise recent activity</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/group-home']">Home</a>
+            </li>
+            <span class="navbar-text">
+                Hello {{firstName|uppercase}}
+            </span>
+        </ul>
+
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2 p-4" style="background-color:rgb(211, 211, 211);">
+            <h2 class="text-center">Recent activity</h2>
+        </div>
+        <div class="col-12 col-sm-8 offset-sm-2 p-0" style="border: ridge;">
+
+            <!--if scrollToTop is 0 then scroll is at the top, if it is false then scroll is not at the top & set it to the height of the div i,e at the bottom-->
+            <div #scrollMe [scrollTop]="(scrollToTop)?0:scrollMe.scrollHeight" class="expense-history">
+
+                <div class="list-group list-group-flush text-center" *ngIf="flag && historyList.length==0">
+                    <h1>Oops!</h1>
+                    <h4>No Activities yet!</h4>
+                </div>
+
+                <div class="list-group list-group-flush" *ngIf="flag && historyList.length>0">
+                    <div class="list-group-item" *ngFor="let h of historyList">
+                        <h6>{{h.message}}</h6>
+                        <small> On {{h.createdOn | date :'medium'}}</small>
+                    </div>
+                    <br><br>
+
+                    <div class="text-center list-group-item">
+                        <button class="btn btn-primary" type="button" (click)="loadEarlierHistory()">Load Earlier
+                            History
+                            <span class="spinner-border spinner-border-sm" *ngIf="loadingPreviousHistory == true"
+                                role="status" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
