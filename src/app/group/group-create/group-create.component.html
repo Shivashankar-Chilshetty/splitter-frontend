@@ -42,7 +42,7 @@
 
           <ng-select #MyNgSelect bindLabel="firstName" placeholder="Select name" [(ngModel)]="selected" appendTo="body"
             name="mySelectBox" [searchable]="true" [clearable]="true" multiple="true" required>
-            <ng-option [value]="item.userId" [disabled]="item.disabled" *ngFor="let item of users">
+            <ng-option [value]="item.userId" *ngFor="let item of users">
               {{item.firstName}} {{item.lastName}}
             </ng-option>
           </ng-select>
