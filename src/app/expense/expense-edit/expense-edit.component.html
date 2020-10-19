@@ -60,7 +60,7 @@
                     <ng-select style="width: 60%;" bindLabel="name" placeholder="Select user" appendTo="body"
                         [searchable]="true" [clearable]="true" [(ngModel)]="paidBy">
 
-                        <ng-option [value]="item.userId" [disabled]="item.disabled" *ngFor="let item of users">
+                        <ng-option [value]="item.userId" *ngFor="let item of users">
                             {{item.name}}</ng-option>
                     </ng-select><br>
 
