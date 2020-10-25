@@ -27,7 +27,7 @@
         </div>
         <div class="col-12 col-sm-8 offset-sm-2 p-0" style="border: ridge;">
 
-            <!--if scrollToTop is 0 then scroll is at the top, if it is false then scroll is not at the top & set it to the height of the div i,e at the bottom-->
+            <!--if scrollToTop is true then scroll is at the top(0), if it is false then scroll is not at the top & set it to the height of the div i,e at the bottom-->
             <div #scrollMe [scrollTop]="(scrollToTop)?0:scrollMe.scrollHeight" class="expense-history">
 
                 <div class="list-group list-group-flush text-center" *ngIf="flag && historyList.length==0">
